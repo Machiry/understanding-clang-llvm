@@ -28,3 +28,14 @@ Repository for understanding and writing LLVM passes.
     export LLVM_DIR=your_path_to_llvm-8.0.0.obj
     export PATH=$LLVM_DIR/bin:$PATH
     ```
+
+## Converting `.c` file to bitcode file
+LLVM passes run on bitcode file. Here, we explain how to convert a `C` file to bitcode file.
+```
+clang -c -emit-llvm <path_to_c_file> -o <path_to_output_bitcode_file>
+```
+Example:
+```
+cd examples
+clang -c -emit-llvm simple.c -o simple.bc
+```
