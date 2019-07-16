@@ -30,6 +30,8 @@ Repository for understanding and writing LLVM passes.
     ```
 
 ## Converting `.c` file to bitcode file
+The folder (examples)[https://github.com/Machiry/understanding-clang-llvm/tree/master/examples] contains a couple of example `.c` files which you can play with.
+
 LLVM passes run on bitcode file. Here, we explain how to convert a `C` file to bitcode file.
 ```
 clang -c -emit-llvm <path_to_c_file> -o <path_to_output_bitcode_file>
@@ -39,3 +41,6 @@ Example:
 cd examples
 clang -c -emit-llvm simple.c -o simple.bc
 ```
+
+## LLVM Passes
+The folder (llvm_passes)[https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes] contains various sample LLVM passes.

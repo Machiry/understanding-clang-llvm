@@ -14,11 +14,16 @@ All the shared objects for the passes will be present inside the `obj` folder.
 
     These passes modify the program by adding instrumentation code.
     * [Log memory access](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/InstrumentationPasses/LogMemAccess): This pass logs all the memory reads and writes by inserting call to the function: `log_mem_access`,
-    with address and value being written and read.
-    
-        To use this pass, make sure that you define the following function in the input source file:
-            ```
+    with address and value being written and read. (Try this on [simple_log.c](https://github.com/Machiry/understanding-clang-llvm/blob/master/examples/simple_log.c))
+      
+        > Usage:
+
+            cd obj/InstrumentationPasses/LogMemAccess
+            opt -load ./libLogMemAccess.so -logm <input_bc_file> -o <path_to_output_bc_file>
             
+        **Note:**
+        To use this pass, make sure that you define the following function in the input source file:
+        ```
                 void log_mem_access(void *addr, int value, int flag) {
                     if(flag == 0) {
                         printf("Reading value 0x%x from %p\n", value, addr);
@@ -27,16 +32,6 @@ All the shared objects for the passes will be present inside the `obj` folder.
                         printf("Writing value 0x%x to %p\n", value, addr);
                     }
                 }
-          
-            
-            ```
-          
-        > Usage:
-            
-            cd obj/InstrumentationPasses/LogMemAccess
-            opt -load ./libLogMemAccess.so -logm <input_bc_file> -o <path_to_output_bc_file>
-            
-            
 * [Static Analysis Passes](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/StaticAnalysisPasses):
 
     These passes perform static analysis on the provided bitcode.
