@@ -44,25 +44,28 @@ namespace UMD {
     bool runOnModule(Module &m) override {
       // iterate through all the functions.
       for (auto &currFunc: m) {
-        // get information about loops.
-        auto &loopAnalysis = getAnalysis<LoopInfoWrapperPass>(currFunc);
-        LoopInfo &loopInfo = loopAnalysis.getLoopInfo();
-        // iterate over all the loops
-        for(auto *lobj: loopInfo.getLoopsInPreorder()) {
-          SmallVector<BasicBlock*, 32> exitBBs;
-          exitBBs.clear();
-          // get the exit basic blocks.
-          lobj->getExitingBlocks(exitBBs);
+        // does this function have body?
+        if(!currFunc.isDeclaration()) {
+          // get information about loops.
+          auto &loopAnalysis = getAnalysis<LoopInfoWrapperPass>(currFunc);
+          LoopInfo &loopInfo = loopAnalysis.getLoopInfo();
+          // iterate over all the loops
+          for (auto *lobj: loopInfo.getLoopsInPreorder()) {
+            SmallVector<BasicBlock *, 32> exitBBs;
+            exitBBs.clear();
+            // get the exit basic blocks.
+            lobj->getExitingBlocks(exitBBs);
 
-          // get the loop exit condition.
-          for(auto *bb: exitBBs) {
-            Instruction *exitInstr = bb->getTerminator();
-            const DebugLoc &DL = exitInstr->getDebugLoc();
-            DILocation *di = DL.get();
+            // get the loop exit condition.
+            for (auto *bb: exitBBs) {
+              Instruction *exitInstr = bb->getTerminator();
+              const DebugLoc &DL = exitInstr->getDebugLoc();
+              DILocation *di = DL.get();
 
-            dbgs() << *exitInstr << " at "<< DL.getLine() << " " << di->getFilename() << "\n";
+              dbgs() << *exitInstr << " at " << DL.getLine() << " " << di->getFilename() << "\n";
+            }
+
           }
-
         }
       }
 

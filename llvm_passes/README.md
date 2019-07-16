@@ -8,22 +8,49 @@ Building all the passes.
     make -j4
 
 All the shared objects for the passes will be present inside the `obj` folder.
+
 ## Passes
 * [Instrumentation Passes](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/InstrumentationPasses):
 
     These passes modify the program by adding instrumentation code.
-    * [Log memory access](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/InstrumentationPasses/LogMemAccess): This pass logs all the memory reads and writes by inserting call to the function: ``,
+    * [Log memory access](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/InstrumentationPasses/LogMemAccess): This pass logs all the memory reads and writes by inserting call to the function: `log_mem_access`,
     with address and value being written and read.
+    
+        To use this pass, make sure that you define the following function in the input source file:
+            ```
+            
+                void log_mem_access(void *addr, int value, int flag) {
+                    if(flag == 0) {
+                        printf("Reading value 0x%x from %p\n", value, addr);
+                    }
+                    if(flag == 1) {
+                        printf("Writing value 0x%x to %p\n", value, addr);
+                    }
+                }
+          
+            
+            ```
+          
+        > Usage:
+            
+            cd obj/InstrumentationPasses/LogMemAccess
+            opt -load ./libLogMemAccess.so -logm <input_bc_file> -o <path_to_output_bc_file>
+            
+            
 * [Static Analysis Passes](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/StaticAnalysisPasses):
 
     These passes perform static analysis on the provided bitcode.
     * [Loop Exiting BB finder](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/StaticAnalysisPasses/GetLoopExitingBBs): This pass identifies all the basic-blocks that control exit to a loop.
+        > Usage:
+        ```
+        cd obj/StaticAnalysisPasses/GetLoopExitingBBs
+        opt -load ./libGetLoopExitingBBs.so -loopbbs <input_bc_file>
+        ```
+    
     * [Function Identifier Pass](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/StaticAnalysisPasses/FunctionIdentifier): This pass identifies all the functions in the module, also prints all the corresponding function names.
-## Using a pass
-Using a pass is easy, just load it using `opt` on a bitcode file. 
-#### Example:
-> Using Function Identifier pass
-```
-cd obj/StaticAnalysisPasses/FunctionIdentifier
-opt -load ./libFunctionIdentifier.so -identfunc <input_bc_file>
-```
+        > Usage:
+        ```
+        cd obj/StaticAnalysisPasses/FunctionIdentifier
+        opt -load ./libFunctionIdentifier.so -identfunc <input_bc_file>
+        ```
+
