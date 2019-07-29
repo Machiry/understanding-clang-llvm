@@ -1,2 +1,3 @@
 add_subdirectory(FunctionIdentifier)
 add_subdirectory(GetLoopExitingBBs)
+add_subdirectory(StructAccessIdentifier)
