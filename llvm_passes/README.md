@@ -48,7 +48,7 @@ All the shared objects for the passes will be present inside the `obj` folder.
         cd obj/StaticAnalysisPasses/FunctionIdentifier
         opt -load ./libFunctionIdentifier.so -identfunc <input_bc_file>
         ```
-     * [StructAccess Identifier Pass](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/StaticAnalysisPasses/StructAccessIdentifierPass): This pass identifies all accesses to structure elements in all functions in the module, also prints the corresponding information.
+     * [StructAccess Identifier Pass](https://github.com/Machiry/understanding-clang-llvm/tree/master/llvm_passes/StaticAnalysisPasses/StructAccessIdentifier): This pass identifies all accesses to structure elements in all functions in the module, also prints the corresponding information.
         > Usage:
         ```
         cd obj/StaticAnalysisPasses/StructAccessIdentifier
